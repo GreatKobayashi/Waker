@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using Waker.Root
+
+<Router AppAssembly="@typeof(MauiProgram).Assembly"
+    AdditionalAssemblies="[typeof(UI.Pages._Imports).Assembly]">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(UI.Components.Layouts.MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+</Router>
