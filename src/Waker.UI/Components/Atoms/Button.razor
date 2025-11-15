@@ -1,0 +1,22 @@
+﻿<button class="btn @Class" @onclick="NotifyParent" disabled="@IsDisabled">@ChildContent</button>
+
+
+@code {
+    [Parameter]
+    public string Class { get; set; } = "";
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    private async Task NotifyParent()
+    {
+        if (OnClick.HasDelegate)
+        {
+            await OnClick.InvokeAsync(null);
+        }
+    }
+}
+

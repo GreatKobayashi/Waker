@@ -1,3 +1,18 @@
-﻿@inherits LayoutComponentBase
+﻿@using Waker.UI
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
+<Header />
 @Body
+<Footer />
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (NavigationService.RedirectURL != "")
+        {
+            NavigationManager.NavigateTo(NavigationService.RedirectURL);
+            NavigationService.RedirectURL = "";
+        }
+    }
+}

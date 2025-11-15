@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Waker.Root
+﻿namespace Waker.Root
 {
     public static class MauiProgram
     {
@@ -15,10 +13,21 @@ namespace Waker.Root
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddScoped<JsInterop>();
+
+#if __ANDROID__
+            builder.Services.AddSingleton<IAlarmRepository>(_ => new AlarmAndroid());
+            builder.Services.AddSingleton<ISoundRepository>(_ => new SoundAndroid());
+#elif __IOS__
+            // TODO
+#endif
+
+            builder.Services.AddSingleton<AlarmController>();
+            builder.Services.AddSingleton<SoundController>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

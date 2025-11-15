@@ -1,6 +1,5 @@
-src/Waker.Root/bin/*
-src/Waker.Root/obj/*
-src/Waker.UI/bin/*
-src/Waker.UI/obj/*
+src/*/bin/*
+src/*/obj/*
 
-src/.vs/*
+src/.vs/*/*
+src/Waker.Root/Platforms/Android/Resources/raw/*

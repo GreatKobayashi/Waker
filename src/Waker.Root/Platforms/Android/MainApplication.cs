@@ -1,7 +1,4 @@
-﻿using Android.App;
-using Android.Runtime;
-
-namespace Waker.Root
+﻿namespace Waker.Root
 {
     [Application]
     public class MainApplication : MauiApplication

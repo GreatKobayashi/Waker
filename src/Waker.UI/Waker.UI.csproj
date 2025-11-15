@@ -4,7 +4,6 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <StaticWebAssetBasePath>assets</StaticWebAssetBasePath>
   </PropertyGroup>
 
 
@@ -14,6 +13,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Waker.Aplication\Waker.Aplication.csproj" />
   </ItemGroup>
 
 </Project>

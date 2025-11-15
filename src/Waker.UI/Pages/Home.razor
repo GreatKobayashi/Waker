@@ -1,3 +1,22 @@
 ﻿@page "/"
+@using Waker.Aplication.Controllers
+@inject SoundController SoundController
 
-Welcome to your new app.
+﻿<AddTimerButton />
+<Button OnClick="Test">Show</Button>
+<ModalWindow IsVisible=_isVisible></ModalWindow>
+
+@code {
+    private bool _isVisible;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // 動作確認用
+        var ents = await SoundController.GetEntities();
+    }
+
+    private async Task Test()
+    {
+        _isVisible = true;
+    }
+}

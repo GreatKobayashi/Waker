@@ -5,7 +5,13 @@ VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waker.Root", "Waker.Root\Waker.Root.csproj", "{21C75998-2DE4-426D-93E7-3D580A9E1D2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waker.UI", "Waker.UI\Waker.UI.csproj", "{1F10E9BD-24D1-47CA-98D5-23E0F6D7CB15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waker.Infrastructure", "Waker.Infrastructure\Waker.Infrastructure.csproj", "{A71EA4CA-2122-4365-82C8-BF1BE120901D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waker.UI", "Waker.UI\Waker.UI.csproj", "{C9B7D201-A54A-4E5B-97FB-8F90BB4C9EB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waker.Domain", "Waker.Domain\Waker.Domain.csproj", "{D89EB7FF-DC5F-45CD-9F9A-F9914D9E2DC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waker.Aplication", "Waker.Aplication\Waker.Aplication.csproj", "{6AB0C49A-A949-444E-98A3-8EE90DFC9A45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +24,22 @@ Global
 		{21C75998-2DE4-426D-93E7-3D580A9E1D2B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{21C75998-2DE4-426D-93E7-3D580A9E1D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21C75998-2DE4-426D-93E7-3D580A9E1D2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1F10E9BD-24D1-47CA-98D5-23E0F6D7CB15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1F10E9BD-24D1-47CA-98D5-23E0F6D7CB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1F10E9BD-24D1-47CA-98D5-23E0F6D7CB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1F10E9BD-24D1-47CA-98D5-23E0F6D7CB15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A71EA4CA-2122-4365-82C8-BF1BE120901D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A71EA4CA-2122-4365-82C8-BF1BE120901D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A71EA4CA-2122-4365-82C8-BF1BE120901D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A71EA4CA-2122-4365-82C8-BF1BE120901D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9B7D201-A54A-4E5B-97FB-8F90BB4C9EB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9B7D201-A54A-4E5B-97FB-8F90BB4C9EB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9B7D201-A54A-4E5B-97FB-8F90BB4C9EB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9B7D201-A54A-4E5B-97FB-8F90BB4C9EB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D89EB7FF-DC5F-45CD-9F9A-F9914D9E2DC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D89EB7FF-DC5F-45CD-9F9A-F9914D9E2DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D89EB7FF-DC5F-45CD-9F9A-F9914D9E2DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D89EB7FF-DC5F-45CD-9F9A-F9914D9E2DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB0C49A-A949-444E-98A3-8EE90DFC9A45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB0C49A-A949-444E-98A3-8EE90DFC9A45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB0C49A-A949-444E-98A3-8EE90DFC9A45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB0C49A-A949-444E-98A3-8EE90DFC9A45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
