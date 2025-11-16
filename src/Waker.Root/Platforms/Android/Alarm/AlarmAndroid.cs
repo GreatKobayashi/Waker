@@ -1,4 +1,8 @@
-﻿using Waker.Root.Platforms.Android.Alarm;
+﻿using Android.App;
+using Android.Content;
+using Waker.Domain.Entities;
+using Waker.Domain.Repositories;
+using Waker.Root.Platforms.Android.Alarm;
 
 
 namespace Waker.Root

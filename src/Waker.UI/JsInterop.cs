@@ -1,61 +1,39 @@
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 
 namespace Waker.UI
 {
-    public class JsInterop
+    public class JSInterop
     {
-        public JsInterop(IJSRuntime jsRuntime)
+        private IJSRuntime _jSRuntime;
+
+        public JSInterop(IJSRuntime jsRuntime)
         {
-            Modal = new ModalModule(new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Waker.UI/js/modal.js").AsTask()));
+            _jSRuntime = jsRuntime;
         }
 
-        public ModalModule Modal { get; }
-
-        public class ModalModule : Module
+        public async Task<Module> GetModule(string moduleName)
         {
-            public ModalModule(Lazy<Task<IJSObjectReference>> moduleModalTask) : base(moduleModalTask)
-            {
-            }
+            return new(await _jSRuntime.InvokeAsync<IJSObjectReference>("import", $"./_content/Waker.UI/js/{moduleName}.js"));
+        }
+    }
 
-            public async ValueTask Show(string id)
-            {
-                await CallScript("show", id);
-            }
+    public class Module : IAsyncDisposable
+    {
+        private IJSObjectReference _jSObjectReference;
 
-            public async ValueTask Hide(string id)
-            {
-                await CallScript("hide", id);
-            }
+        public Module(IJSObjectReference jSObjectReference)
+        {
+            _jSObjectReference = jSObjectReference;
         }
 
-        public abstract class Module : IAsyncDisposable
+        public async ValueTask CallScript(string method, params object[] args)
         {
-            private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
-            private IJSObjectReference? _module;
+            await _jSObjectReference.InvokeVoidAsync(method, args);
+        }
 
-            protected Module(Lazy<Task<IJSObjectReference>> moduleModalTask)
-            {
-                _moduleTask = moduleModalTask;
-            }
-
-            protected async ValueTask CallScript(string method, params object[] args)
-            {
-                if (_module is null)
-                {
-                    _module = await _moduleTask.Value;
-                }
-                await _module.InvokeVoidAsync(method, args);
-            }
-
-            public async ValueTask DisposeAsync()
-            {
-                if (_moduleTask.IsValueCreated)
-                {
-                    var module = await _moduleTask.Value;
-                    await module.DisposeAsync();
-                }
-            }
+        public async ValueTask DisposeAsync()
+        {
+            await _jSObjectReference.DisposeAsync();
         }
     }
 }

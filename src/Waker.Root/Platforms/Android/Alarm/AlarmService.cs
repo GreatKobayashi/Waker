@@ -1,4 +1,10 @@
-﻿namespace Waker.Root.Platforms.Android.Alarm
+﻿using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.Media;
+using Android.OS;
+
+namespace Waker.Root.Platforms.Android.Alarm
 {
     [Service(ForegroundServiceType = ForegroundService.TypeMediaPlayback)]
     public class AlarmService : Service

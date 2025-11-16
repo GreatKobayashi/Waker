@@ -1,4 +1,10 @@
-﻿namespace Waker.Root.Platforms.Android.Alarm
+﻿using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.OS;
+using Waker.UI;
+
+namespace Waker.Root.Platforms.Android.Alarm
 {
     [Activity(Label = "AlarmStopActivity", Exported = true, LaunchMode = LaunchMode.SingleTop)]
     public class AlarmStopActivity : Activity

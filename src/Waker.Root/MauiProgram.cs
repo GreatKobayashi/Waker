@@ -1,4 +1,10 @@
-﻿namespace Waker.Root
+﻿using Microsoft.Extensions.Logging;
+using Waker.Aplication.Controllers;
+using Waker.Domain.Repositories;
+using Waker.Root.Platforms.Android.Sound;
+using Waker.UI;
+
+namespace Waker.Root
 {
     public static class MauiProgram
     {
@@ -13,7 +19,7 @@
                 });
 
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddScoped<JsInterop>();
+            builder.Services.AddScoped<JSInterop>();
 
 #if __ANDROID__
             builder.Services.AddSingleton<IAlarmRepository>(_ => new AlarmAndroid());

@@ -1,4 +1,7 @@
-﻿namespace Waker.Root.Platforms.Android.Alarm
+﻿using Android.Content;
+using Waker.Domain.Exceptions;
+
+namespace Waker.Root.Platforms.Android.Alarm
 {
     [BroadcastReceiver(Enabled = true, Exported = true)]
     public class AlarmReceiver : BroadcastReceiver

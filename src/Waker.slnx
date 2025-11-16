@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="Waker.Aplication/Waker.Aplication.csproj" Id="a63c9e08-e6ed-4dc6-85c5-a1cb2e21951f" />
+  <Project Path="Waker.Domain/Waker.Domain.csproj" Id="f5dc3de6-d2e3-43f1-aa26-86b842e7f3cb" />
+  <Project Path="Waker.Infrastructure/Waker.Infrastructure.csproj" Id="22719c7b-8d28-45fb-9143-81974da5caf5" />
+  <Project Path="Waker.Root/Waker.Root.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="Waker.UI/Waker.UI.csproj" Id="174082aa-522f-4b97-97a4-bcfa41a6204d" />
+</Solution>

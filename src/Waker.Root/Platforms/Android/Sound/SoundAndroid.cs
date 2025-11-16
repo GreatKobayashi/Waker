@@ -1,4 +1,8 @@
-﻿namespace Waker.Root.Platforms.Android.Sound
+﻿using System.Text.Json;
+using Waker.Domain.Entities;
+using Waker.Domain.Repositories;
+
+namespace Waker.Root.Platforms.Android.Sound
 {
     public class SoundAndroid : ISoundRepository
     {
