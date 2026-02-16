@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using Waker.Aplication.Controllers;
-using Waker.Domain.Repositories;
-using Waker.Root.Platforms.Android.Sound;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Waker.Infrastructure.SQLite;
 using Waker.UI;
 
 namespace Waker.Root
@@ -20,16 +19,8 @@ namespace Waker.Root
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddScoped<JSInterop>();
-
-#if __ANDROID__
-            builder.Services.AddSingleton<IAlarmRepository>(_ => new AlarmAndroid());
-            builder.Services.AddSingleton<ISoundRepository>(_ => new SoundAndroid());
-#elif __IOS__
-            // TODO
-#endif
-
-            builder.Services.AddSingleton<AlarmController>();
-            builder.Services.AddSingleton<SoundController>();
+            builder.Services.AddSingleton(Factories.GetAlarmController());
+            builder.Services.AddSingleton(Factories.GetSoundController());
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

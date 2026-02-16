@@ -1,7 +1,74 @@
-﻿@inject JSInterop JSInteropBase;
+﻿@inject AlarmController AlarmController;
+@inject SoundController SoundController;
+@inject NavigationManager NavigationManager;
+﻿
+<AddTimerButton OnClick="ShowLayer" />
+<ModalWindow @bind-IsVisible=_isVisible ActionAsync="SetAlarm">
+    <div class="d-flex flex-row justify-content-center">
+        <div class="mx-2">@_date.Month</div>
+        <div>月</div>
+        <div class ="mx-2">@_date.Day</div>
+        <div>日</div>
+    </div>
 
-<h3>MakeAlarmLayer</h3>
+    <ClockSet
+        @bind-SelectedHour="_hour" @bind-SelectedMinute="_minute" 
+        @bind-SelectedHour:after="CheckIfTimeIsPast" @bind-SelectedMinute:after="CheckIfTimeIsPast">
+    </ClockSet>
 
-@code {
+    @if (_sounds is not null)
+    {
+        <select class="form-select" aria-label="Default select example" @bind="_seletedSoundIndex">
+            @for (var i = 0; i < _sounds.Length; i++)
+            {
+                <option value="@i">@_sounds[i].DisplayName</option>
+            }
+        </select>
+    }
+</ModalWindow>
 
+
+    @code {
+    private string _hour = "00";
+    private string _minute = "00";
+    private bool _isVisible;
+    private int _seletedSoundIndex = 0;
+    private SoundEntity[]? _sounds;
+    private DateTime _date;
+
+    protected override void OnInitialized()
+    {
+        _sounds = SoundController.GetEntities();
+        _date = DateTime.Now;
+    }
+
+    private async Task ShowLayer()
+    {
+        _hour = DateTime.Now.Hour.ToString("d2");
+        _minute = DateTime.Now.Minute.ToString("d2");
+        _isVisible = true;
+    }
+
+    private async Task SetAlarm()
+    {
+        var now = DateTime.Now;
+        var date = new DateTime(now.Year, now.Month, now.Day, Convert.ToInt32(_hour), Convert.ToInt32(_minute), 0);
+        var alarm = new AlarmEntity(date, _sounds![_seletedSoundIndex]);
+        AlarmController.Set(alarm);
+
+        _ = NavigationService.DelayReload();
+    }
+
+    private void CheckIfTimeIsPast()
+    {
+        var now = DateTime.Now;
+        if (Convert.ToInt32(_hour) <= now.Hour && Convert.ToInt32(_minute) < now.Minute)
+        {
+            _date = DateTime.Now.AddDays(1);
+        }
+        else
+        {
+            _date = DateTime.Now;
+        }
+    }
 }

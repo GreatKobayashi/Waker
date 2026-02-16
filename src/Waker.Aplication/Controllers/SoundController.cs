@@ -12,9 +12,9 @@ namespace Waker.Aplication.Controllers
             _soundRepository = soundRepository;
         }
 
-        public async Task<SoundEntity[]> GetEntities()
+        public SoundEntity[] GetEntities()
         {
-            return await _soundRepository.GetEntities();
+            return _soundRepository.GetEntities();
         }
     }
 }

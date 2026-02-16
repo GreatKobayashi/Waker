@@ -1,16 +1,9 @@
-﻿@using Waker.Aplication.Controllers
-@using Waker.Domain.Entities
-@inject AlarmController Alarm
-
+﻿
 <div class="fixed-right-bot">
-    <Button Class="btn-primary rounded-circle btn-size p-0" OnClick="SetAlarm"><i class="bi bi-plus icon-size"></i></Button>
+    <Button Class="btn-primary rounded-circle btn-size p-0" OnClick="OnClick"><i class="bi bi-plus icon-size"></i></Button>
 </div>
 
 @code {
-    private void SetAlarm()
-    {
-        var alarm = new AlarmEntity(new DateTime().AddSeconds(5), new SoundEntity("guitar", "ギター"));
-        Alarm.Set(alarm);
-    }
-
+    [Parameter]
+    public EventCallback OnClick { get; set; }
 }

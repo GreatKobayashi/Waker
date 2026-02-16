@@ -1,0 +1,112 @@
+﻿@inject JSInterop JSInterop;
+
+<div class="d-flex flex-column overflow-auto scroll-container" id=@_id style="height:@(_viewportHeight)px;">
+    <div style="padding:@(_itemHeight / 2)px;"></div>
+    @for (var i = 0; i < _itemsForVanity.Count; i++)
+    {
+        <div class="item text-center d-flex justify-content-center @ItemClass" style="font-size:@(FontSize)px;" id="@($"{_id}-{i}")">@_itemsForVanity[i]</div>
+    }
+    <div style="padding:@(_itemHeight / 2)px;"></div>
+</div>
+
+@code {
+    [Parameter]
+    public string SelectedItem { get; set; } = "";
+    [Parameter]
+    public EventCallback<string> SelectedItemChanged { get; set; }
+    [Parameter]
+    public string[] Items { get; set; } = [];
+
+    // 以下見た目用プロパティ
+    [Parameter]
+    public string? ItemClass { get; set; }
+    [Parameter]
+    public int FontSize { get; set; } = 16;
+    [Parameter]
+    public float LineHeight { get; set; } = 1.5f;
+    [Parameter]
+    public float ContainerHeight { get; set; } = 1.5f;
+    [Parameter]
+    public bool ChangeSmooth { get; set; } = false;
+    [Parameter]
+    public bool Loop { get; set; } = false;
+
+    private partial Task InitializeJS();
+    private partial Task InitializeScrollInput();
+    private partial Task PerformChangeItemSelection(Behavior behavior);
+
+    private static int _scrolls = 0;
+
+    private float _itemHeight => (float)FontSize * LineHeight;
+    private float _viewportHeight => _itemHeight * ContainerHeight;
+    private string _id = "";
+    private List<string> _itemsForVanity = [];
+    private int _selectedIndex;
+    private bool _isInnerCall;
+
+    protected override void OnInitialized()
+    {
+        _itemsForVanity = Items.ToList();
+
+        if (Loop)
+        {
+            _itemsForVanity = Enumerable.Repeat(_itemsForVanity, 3).SelectMany(x => x).ToList();
+        }
+
+        if (string.IsNullOrEmpty(SelectedItem))
+        {
+            SelectedItem = Items[0];
+        }
+
+        SetSelectedItemIndex();
+        _id = $"scrollContainer{++_scrolls}";
+        InitializeJS();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var behavior = ChangeSmooth ? Behavior.Smooth : Behavior.Instant;
+        if (_isInnerCall)
+        {
+            _isInnerCall = false;
+            behavior = Behavior.Instant;
+        }
+        await ChangeItemSelection(SelectedItem, behavior);
+    }
+
+    public async Task ChangeItemSelection(string item, Behavior behavior)
+    {
+        SelectedItem = item;
+
+        SetSelectedItemIndex();
+        await PerformChangeItemSelection(behavior);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            InitializeScrollInput();
+        }
+    }
+
+    private void SetSelectedItemIndex()
+    {
+        var result = _itemsForVanity!.IndexOf(SelectedItem);
+        if (result == -1)
+        {
+            throw new KeyNotFoundException();
+        }
+
+        if (Loop)
+        {
+            result += Items.Length;
+        }
+        _selectedIndex = result;
+    }
+
+    public enum Behavior
+    {
+        Smooth, Instant
+    }
+}

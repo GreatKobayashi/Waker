@@ -1,18 +1,21 @@
 ﻿@inject JSInterop JSInterop;
 
-<div class="modal fade" @key="@_id" id="@_id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade pt-5" @key="@_id" id="@_id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+            @if (Title is not null)
+            {
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">@Title</h1>
+                    <button type="button" class="btn-close" @onclick="() => IsVisibleChanged.InvokeAsync(false)" aria-label="Close"></button>
+                </div>
+            }
             <div class="modal-body">
-                ...
+                @ChildContent
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @onclick="() => IsVisible = false">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary ms-0" @onclick="() => IsVisibleChanged.InvokeAsync(false)">@SecondaryButtonText</button>
+                <button type="button" class="btn btn-primary" @onclick="CallAction">@PrimaryButtonText</button>
             </div>
         </div>
     </div>
@@ -22,11 +25,23 @@
     [Parameter]
     public bool IsVisible { get; set; }
     [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public string? Title { get; set; }
+    [Parameter]
+    public string PrimaryButtonText { get; set; } = "OK";
+    [Parameter]
+    public string SecondaryButtonText { get; set; } = "CANCEL";
+    [Parameter]
+    public Action? Action { get; set; }
+    [Parameter]
+    public Func<Task>? ActionAsync { get; set; }
 
     private partial Task InitializeJS();
-    private partial Task Show(string id);
-    private partial Task Hide(string id);
+    private partial Task Show();
+    private partial Task Hide();
 
     private static int _modals = 0;
     private string _id = "";
@@ -35,11 +50,11 @@
     {
         if (IsVisible)
         {
-            await Show(_id);
+            await Show();
         }
         else
         {
-            await Hide(_id);
+            await Hide();
         }
     }
 
@@ -47,5 +62,20 @@
     {
         _id = $"modalDialog{++_modals}";
         InitializeJS();
+    }
+
+    private async void CallAction()
+    {
+        if (Action is not null)
+        {
+            Action();
+        }
+
+        if (ActionAsync is not null)
+        {
+            await ActionAsync();
+        }
+
+        await IsVisibleChanged.InvokeAsync(false);
     }
 }

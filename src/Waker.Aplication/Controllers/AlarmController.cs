@@ -5,21 +5,65 @@ namespace Waker.Aplication.Controllers
 {
     public class AlarmController
     {
-        private IAlarmRepository _alarmRepository;
+        private IAlarmRepository _alarmRepositoryDevice;
+        private IAlarmRepository _alarmRepositoryRec;
+        private ISoundRepository _soundRepository;
 
-        public AlarmController(IAlarmRepository alarmRepository)
+        public AlarmController(IAlarmRepository alarmRepositoryDevice, IAlarmRepository alarmRepositoryDb, ISoundRepository soundRepository)
         {
-            _alarmRepository = alarmRepository;
+            _alarmRepositoryDevice = alarmRepositoryDevice;
+            _alarmRepositoryRec = alarmRepositoryDb;
+            _soundRepository = soundRepository;
         }
 
         public void Set(AlarmEntity alarm)
         {
-            _alarmRepository.Set(alarm);
+            _alarmRepositoryRec.Set(alarm);
+            _alarmRepositoryDevice.Set(alarm);
         }
 
         public void Stop()
         {
-            _alarmRepository.Stop();
+            _alarmRepositoryDevice.Stop();
+        }
+
+        public void Cancel(AlarmEntity alarm)
+        {
+            _alarmRepositoryDevice.Cancel(alarm);
+            _alarmRepositoryRec.Cancel(alarm);
+        }
+
+        public AlarmEntity[] GetAllEntities()
+        {
+            var alarms = _alarmRepositoryRec.GetAllEntities();
+            SetAlarmDispName(alarms);
+
+            return alarms;
+        }
+
+        public AlarmEntity[] GetHistories()
+        {
+            var alarms = _alarmRepositoryRec.GetEntities(null, DateTime.Now);
+            SetAlarmDispName(alarms);
+
+            return alarms;
+        }
+
+        public AlarmEntity[] GetSchedules()
+        {
+            var alarms = _alarmRepositoryRec.GetEntities(DateTime.Now, null);
+            SetAlarmDispName(alarms);
+
+            return alarms;
+        }
+
+        private void SetAlarmDispName(AlarmEntity[] alarms)
+        {
+            var sounds = _soundRepository.GetEntities();
+            foreach (var alarm in alarms)
+            {
+                alarm.Sound.DisplayName = sounds.First(x => x.FileName == alarm.Sound.FileName).DisplayName;
+            }
         }
     }
 }

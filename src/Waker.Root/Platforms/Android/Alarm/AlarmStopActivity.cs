@@ -13,7 +13,8 @@ namespace Waker.Root.Platforms.Android.Alarm
         {
             base.OnCreate(savedInstanceState);
 
-            NavigationService.RedirectURL = "/test";
+            NavigationService.SetRedirectUrl(Url.Stop);
+
             // アプリを起動
             var launchIntent = new Intent(this, typeof(MainActivity));
             launchIntent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask);

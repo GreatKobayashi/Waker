@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.OS;
+using Waker.UI;
 
 namespace Waker.Root.Platforms.Android.Alarm
 {
@@ -40,6 +41,8 @@ namespace Waker.Root.Platforms.Android.Alarm
             _player = MediaPlayer.Create(this, resourceId)!;
             _player.Looping = true;
             _player.Start();
+
+            NavigationService.NavigateTo(Url.Stop);
 
             return StartCommandResult.Sticky;
         }

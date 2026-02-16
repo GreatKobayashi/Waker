@@ -8,13 +8,18 @@ namespace Waker.Root.Platforms.Android.Sound
     {
         private static readonly string _fileName = "SoundList.json";
 
-        public async Task<SoundEntity[]> GetEntities()
+        public SoundEntity[] GetEntities()
+        {
+            return GetEntitiesAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        private async Task<SoundEntity[]> GetEntitiesAsync()
         {
             try
             {
                 using var stream = await FileSystem.Current.OpenAppPackageFileAsync(_fileName);
                 using var reader = new StreamReader(stream);
-                var dic = JsonSerializer.Deserialize<Dictionary<string, string>>(await reader.ReadToEndAsync())!;
+                var dic = JsonSerializer.Deserialize<Dictionary<string, string>>(await reader.ReadToEndAsync().ConfigureAwait(false))!;
 
                 var entities = new List<SoundEntity>();
                 foreach (var pair in dic)

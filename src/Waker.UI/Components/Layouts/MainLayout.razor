@@ -3,16 +3,15 @@
 @inject NavigationManager NavigationManager
 
 <Header />
-@Body
+<div class="body-content">
+    @Body
+</div>
 <Footer />
 
 @code {
     protected override void OnInitialized()
     {
-        if (NavigationService.RedirectURL != "")
-        {
-            NavigationManager.NavigateTo(NavigationService.RedirectURL);
-            NavigationService.RedirectURL = "";
-        }
+        NavigationService.Initialize(NavigationManager);
+        NavigationService.Redirect();
     }
 }

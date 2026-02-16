@@ -1,12 +1,16 @@
-﻿namespace Waker.UI.Components.Molecules
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Waker.UI.Components.Molecules
 {
-    public partial class ModalWindow
+    public partial class Collapse
     {
         private Module? _module;
 
         private partial async Task InitializeJS()
         {
-            _module = await JSInterop.GetModule("modal");
+            _module = await JSInterop.GetModule("collapse");
         }
 
         private partial async Task Show()

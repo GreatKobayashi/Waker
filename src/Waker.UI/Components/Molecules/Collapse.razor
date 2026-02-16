@@ -1,0 +1,39 @@
+﻿@inject JSInterop JSInterop;
+
+<div class="collapse" id="@_id">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private partial Task InitializeJS();
+    private partial Task Show();
+    private partial Task Hide();
+
+    private static int _collapses = 0;
+    private string _id = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (IsVisible)
+        {
+            await Show();
+        }
+        else
+        {
+            await Hide();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        _id = $"collapse{++_collapses}";
+        InitializeJS();
+    }
+}

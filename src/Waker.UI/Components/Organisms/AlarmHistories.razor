@@ -1,0 +1,47 @@
+﻿@inject AlarmController AlarmController
+
+<Button OnClick="ChangeVisible" Class="@_buttonClass">@_buttonText</Button>
+<Collapse @bind-IsVisible=_isVisible>
+    @if (_alarms is not null && _alarms.Any())
+    {
+        @foreach (var alarm in _alarms.Take(_showingHistories))
+        {
+            <div class="m-2" @key="@_alarms.IndexOf(alarm)">
+                <AlarmCard Title="@alarm.DateTime.ToString(_dateFormat)" SubTitle="One Time">test</AlarmCard>
+            </div>
+        }
+
+        @if (_showingHistories < _alarms.Length)
+        {
+            <div class="d-flex justify-content-center">
+                <Button OnClick="ShowMore">Show more</Button>
+            </div>
+        }
+    }
+</Collapse>
+
+    @code {
+    private static readonly string _dateFormat = "MM/dd HH : mm";
+
+    private AlarmEntity[]? _alarms;
+    private bool _isVisible;
+    private int _showingHistories = 5;
+    private string _buttonText => _isVisible ? "Hide Histories" : "Show Histories";
+    private string _buttonClass => (_isVisible ? "btn-light" : "btn-secondary") + " m-2";
+
+    protected override void OnInitialized()
+    {
+        _alarms = AlarmController.GetHistories();
+        _alarms = _alarms.OrderByDescending(x => x.DateTime).ToArray();
+    }
+
+    private async Task ChangeVisible()
+    {
+        _isVisible = !_isVisible;
+    }
+
+    private void ShowMore()
+    {
+        _showingHistories = Math.Min(_showingHistories + 5, _alarms?.Length ?? 0);
+    }
+}

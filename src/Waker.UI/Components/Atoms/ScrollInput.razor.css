@@ -1,0 +1,7 @@
+.scroll-container {
+    scroll-snap-type: y mandatory;
+}
+
+.item {
+    scroll-snap-align: center;
+}

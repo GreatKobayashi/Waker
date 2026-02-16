@@ -1,0 +1,27 @@
+﻿
+<div class="d-flex flex-row justify-content-center align-items-center relative">
+    <div class="col-3 front">
+        <ScrollInput FontSize="32" Items="_hours" SelectedItem="@SelectedHour" SelectedItemChanged="@SelectedHourChanged" Loop />
+    </div>
+    <div class="mb-1 front" style="font-size: 32px;">:</div>
+    <div class="col-3 front">
+        <ScrollInput FontSize="32" Items="_minutes" SelectedItem="@SelectedMinute" SelectedItemChanged="@SelectedMinuteChanged" Loop />
+    </div>
+    <div class="bg-line rounded" />
+</div>
+
+
+@code {
+    [Parameter]
+    public required string SelectedHour { get; set; }
+    [Parameter]
+    public EventCallback<string> SelectedHourChanged { get; set; }
+    [Parameter]
+    public required string SelectedMinute { get; set; }
+    [Parameter]
+    public EventCallback<string> SelectedMinuteChanged { get; set; }
+
+    private static string[] _hours = Enumerable.Range(0, 24).Select(x => x.ToString("d2")).ToArray();
+    private static string[] _minutes = Enumerable.Range(0, 60).Select(x => x.ToString("d2")).ToArray();
+
+}

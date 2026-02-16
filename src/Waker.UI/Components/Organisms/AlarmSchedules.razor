@@ -1,0 +1,54 @@
+﻿@inject AlarmController AlarmController
+
+<ModalWindow
+    @bind-IsVisible="_isConfigureMessageVisible"
+    Action="CancelAlarm"
+    PrimaryButtonText="YES"
+    SecondaryButtonText="NO">
+    Are you sure to you want to cancel this alarm ?
+</ModalWindow>
+
+<div class="mx-2">
+    <h2 class="border-bottom">Schedule</h2>
+</div>
+
+@if (_alarms is not null && _alarms.Any())
+{
+    @foreach (var alarm in _alarms)
+    {
+        <div class="m-2" @key="@_alarms.IndexOf(alarm)">
+            <AlarmCard Title="@alarm.DateTime.ToString(_dateFormat)" SubTitle="One Time" IsCancelable OnCancelButtonClick="() => OnCancelButtonClicked(alarm)">test</AlarmCard>
+        </div>
+    }
+}
+
+@code {
+    private static readonly string _dateFormat = "MM/dd HH : mm";
+
+    private AlarmEntity[]? _alarms;
+    private bool _isConfigureMessageVisible = false;
+    private AlarmEntity? _selectedAlarm;
+
+    protected override void OnInitialized()
+    {
+        _alarms = AlarmController.GetSchedules();
+        _alarms = _alarms.OrderBy(x => x.DateTime).ToArray();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    private void OnCancelButtonClicked(AlarmEntity alarm)
+    {
+        _selectedAlarm = alarm;
+        _isConfigureMessageVisible = true;
+    }
+
+    private void CancelAlarm()
+    {
+        AlarmController.Cancel(_selectedAlarm!);
+        _ = NavigationService.DelayReload();
+    }
+}

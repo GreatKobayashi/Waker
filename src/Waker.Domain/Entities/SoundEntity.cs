@@ -2,13 +2,13 @@
 {
     public class SoundEntity
     {
-        public SoundEntity(string fileName, string displayName)
+        public SoundEntity(string displayName, string fileName)
         {
-            FileName = fileName;
             DisplayName = displayName;
+            FileName = fileName;
         }
 
-        public string FileName { get; set; }
         public string DisplayName { get; set; }
+        public string FileName { get; set; }
     }
 }

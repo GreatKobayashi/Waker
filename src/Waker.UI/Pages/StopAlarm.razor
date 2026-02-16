@@ -1,0 +1,19 @@
+﻿@page "/stop"
+@using Waker.Aplication.Controllers
+@inject AlarmController AlarmController
+
+<div class="d-flex flex-column mt-3">
+    <div class="m-auto">@DateTime.Now.ToString("M")</div>
+    <div class="m-auto fs-1">@DateTime.Now.ToString("hh : mm")</div>
+</div>
+
+<StopAlarmButton OnClick="Stop" />
+
+@code {
+
+    private void Stop()
+    {
+        AlarmController.Stop();
+        NavigationService.NavigateTo(Url.Home);
+    }
+}
