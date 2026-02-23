@@ -1,6 +1,4 @@
-﻿using Foundation;
-
-namespace Waker.Root
+﻿namespace Waker.Root
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

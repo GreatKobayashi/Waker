@@ -5,7 +5,8 @@ namespace Waker.UI
     public static class NavigationService
     {
         public static readonly Dictionary<Url, string> _urlKeyValuePairs = new() { { Url.Home, "/" }, { Url.Stop, "/stop" } };
-        private static readonly string _reloadQuery = "reload=1";
+        private static readonly string _queryStringTrue = "1";
+        private static readonly string _reloadQuery = $"reload={_queryStringTrue}";
 
         private static string _redirectURL = "";
         private static NavigationManager? _navigationManager;
@@ -42,6 +43,8 @@ namespace Waker.UI
         {
             _redirectURL = _urlKeyValuePairs[url];
         }
+
+        public static bool CheckIfReloaded(string? reloadQuery) => reloadQuery == _queryStringTrue;
     }
 
     public enum Url

@@ -1,4 +1,5 @@
 ﻿using Waker.Aplication.Controllers;
+using Waker.Domain;
 using Waker.Domain.Repositories;
 using Waker.Infrastructure.Fake;
 using Waker.Infrastructure.SQLite;
@@ -13,12 +14,26 @@ namespace Waker.Root
 #if __ANDROID__
         static Factories()
         {
-            _soundRepository = new SoundAndroid();
+            if (Shared.IsFake)
+            {
+                _soundRepository = new SoundFake();
+            }
+            else
+            {
+                _soundRepository = new SoundAndroid();
+            }
         }
 
         public static AlarmController GetAlarmController()
         {
-            return new(new AlarmAndroid(), new AlarmSQLite(FileSystem.AppDataDirectory), _soundRepository);
+            if (Shared.IsFake)
+            {
+                return new(new AlarmFake(), new AlarmFake(), _soundRepository);
+            }
+            else
+            {
+                return new(new AlarmAndroid(), new AlarmSQLite(FileSystem.AppDataDirectory), _soundRepository);
+            }
         }
 
         public static SoundController GetSoundController()

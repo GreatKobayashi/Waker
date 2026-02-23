@@ -1,0 +1,79 @@
+﻿@inject JSInterop JSInterop;
+
+<div class="toast-container position-fixed fixed-right-bot p-3">
+    @foreach (var toast in _toasts)
+    {
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="@toast.Id">
+            <div class="toast-header">
+                <strong class="me-auto">@toast.Title</strong>
+                <small class="text-body-secondary">@ToRelativeTime(toast.DateTime)</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @toast.Message
+                @toast.Content
+            </div>
+        </div>
+    }
+</div>
+
+
+@code {
+    public struct ToastInfo
+    {
+        public ToastInfo(string title, DateTime dateTime, string message, RenderFragment? content = null)
+        {
+            Title = title;
+            DateTime = dateTime;
+            Message = message;
+            Content = content;
+        }
+
+        public string Title { get; }
+        public DateTime DateTime { get; }
+        public string Message { get; }
+        public RenderFragment? Content { get; }
+        public string Id { get; set; } = "";
+    }
+
+    protected override void OnInitialized()
+    {
+        InitializeJS();
+    }
+
+    public void Add(ToastInfo toast, int visibleMilliSeconds = 5000)
+    {
+        toast.Id = _idPrefix + _toastNumber++;
+        _toasts.Add(toast);
+        StateHasChanged();
+        Show(toast.Id, visibleMilliSeconds);
+    }
+
+    private partial Task InitializeJS();
+    private partial Task Show(string id, int visibleMilliSeconds);
+
+    private static readonly string _idPrefix = "toast";
+
+    private static int _toastNumber = 1;
+    private List<ToastInfo> _toasts = [];
+
+    private static string ToRelativeTime(DateTime dateTime)
+    {
+        var now = DateTime.Now;
+        var diff = now - dateTime;
+
+        if (diff.TotalSeconds < 10)
+            return "just now";
+
+        if (diff.TotalSeconds < 60)
+            return $"{(int)diff.TotalSeconds} seconds ago";
+
+        if (diff.TotalMinutes < 60)
+            return $"{(int)diff.TotalMinutes} minutes ago";
+
+        if (diff.TotalHours < 24)
+            return $"{(int)diff.TotalHours} hours ago";
+
+        return $"{(int)diff.TotalDays} days ago";
+    }
+}

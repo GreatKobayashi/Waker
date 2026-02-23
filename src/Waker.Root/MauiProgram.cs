@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Waker.Infrastructure.SQLite;
+﻿using Microsoft.Extensions.Logging;
 using Waker.UI;
 
 namespace Waker.Root

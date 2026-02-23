@@ -37,11 +37,13 @@ namespace Waker.Infrastructure.SQLite
 
             if (from is not null)
             {
+                var fromValue = from.Value;
                 query = query.Where(x => x.DateTime >= from);
             }
 
             if (to is not null)
             {
+                var toValue = to.Value;
                 query = query.Where(x => x.DateTime <= to);
             }
 

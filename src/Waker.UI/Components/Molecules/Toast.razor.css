@@ -1,0 +1,10 @@
+.fixed-right-bot {
+    position: fixed;
+    bottom: 140px;
+    right: 0px;
+    z-index: 500;
+}
+
+.toast {
+    max-width: 250px;
+}

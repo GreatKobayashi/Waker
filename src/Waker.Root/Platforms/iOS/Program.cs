@@ -1,7 +1,4 @@
-﻿using ObjCRuntime;
-using UIKit;
-
-namespace Waker.Root
+﻿namespace Waker.Root
 {
     public class Program
     {

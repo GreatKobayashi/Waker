@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net10.0-android;</TargetFrameworks>
-    <AndroidTargetSdkVersion>34</AndroidTargetSdkVersion>
 
     <OutputType>Exe</OutputType>
     <RootNamespace>Waker.Root</RootNamespace>
