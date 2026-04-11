@@ -1,4 +1,5 @@
-﻿<div class="card">
+﻿@using Waker.Domain.Entities
+<div class="card">
     <div class="card-body">
         @if (IsCancelable)
         {
@@ -8,21 +9,28 @@
                 </Button>
             </div>
         }
-        <h5 class="card-title">@Title</h5>
-        <h6 class="card-subtitle mb-2 text-body-secondary">@SubTitle</h6>
-        @ChildContent
+        <h5 class="card-title">@Alarm.DateTime.ToString(_dateFormat)</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">one time</h6>
+        @if (Alarm.StartedAt is not null)
+        {
+            <p>Alarm started at : @Alarm.StartedAt.Value.ToString(_dateFormat)</p>
+        }
+        @if (Alarm.StoppedAt is not null)
+        {
+            <p>Alarm stopped at : @Alarm.StoppedAt.Value.ToString(_dateFormat)</p>
+        }
     </div>
 </div>
 
 @code {
     [Parameter]
-    public required string Title { get; set; }
-    [Parameter]
-    public string? SubTitle { get; set; }
+    public required AlarmEntity Alarm { get; set; }
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
     [Parameter]
     public bool IsCancelable { get; set; }
     [Parameter]
     public EventCallback OnCancelButtonClick { get; set; }
+
+    private static readonly string _dateFormat = "MM/dd HH : mm";
 }

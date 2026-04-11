@@ -15,6 +15,7 @@ namespace Waker.Root.Platforms.Android.Alarm
 
             var serviceIntent = new Intent(context, typeof(AlarmService));
             serviceIntent.PutExtra(RootConstant.SOUND_KEY, intent.GetStringExtra(RootConstant.SOUND_KEY));
+            serviceIntent.PutExtra(RootConstant.ALARM_ID_KEY, intent.GetIntExtra(RootConstant.ALARM_ID_KEY, -1));
 
             context.StartForegroundService(serviceIntent);
         }

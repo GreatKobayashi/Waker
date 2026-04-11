@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Waker.Domain.Handlers;
 using Waker.UI;
 
 namespace Waker.Root
@@ -17,7 +18,11 @@ namespace Waker.Root
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddScoped<JSInterop>();
-            builder.Services.AddSingleton(Factories.GetAlarmController());
+
+            var alarmController = Factories.GetAlarmController();
+            builder.Services.AddSingleton(alarmController);
+            builder.Services.AddSingleton<IAlarmEventHandler>(alarmController);
+            builder.Services.AddSingleton(Factories.GetNavigationHandler());
             builder.Services.AddSingleton(Factories.GetSoundController());
 
 #if DEBUG

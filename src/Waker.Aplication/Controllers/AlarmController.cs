@@ -1,13 +1,15 @@
 ﻿using Waker.Domain.Entities;
+using Waker.Domain.Handlers;
 using Waker.Domain.Repositories;
 
 namespace Waker.Aplication.Controllers
 {
-    public class AlarmController
+    public class AlarmController : IAlarmEventHandler
     {
         private IAlarmRepository _alarmRepositoryDevice;
         private IAlarmRepository _alarmRepositoryRec;
         private ISoundRepository _soundRepository;
+        private int _ringingAlarmId;
 
         public AlarmController(IAlarmRepository alarmRepositoryDevice, IAlarmRepository alarmRepositoryDb, ISoundRepository soundRepository)
         {
@@ -22,9 +24,18 @@ namespace Waker.Aplication.Controllers
             _alarmRepositoryDevice.Set(alarm);
         }
 
+        public void OnAlarmStarted(int alarmId)
+        {
+            _ringingAlarmId = alarmId;
+            var alarm = _alarmRepositoryRec.GetById(alarmId);
+            _alarmRepositoryRec.OnAlarmStarted(alarm);
+        }
+
         public void Stop()
         {
-            _alarmRepositoryDevice.Stop();
+            var alarm = _alarmRepositoryRec.GetById(_ringingAlarmId);
+            _alarmRepositoryDevice.Stop(alarm);
+            _alarmRepositoryRec.Stop(alarm);
         }
 
         public void Cancel(AlarmEntity alarm)

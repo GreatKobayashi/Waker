@@ -28,5 +28,25 @@ namespace Waker.Infrastructure.Fake
         {
             throw new NotImplementedException();
         }
+
+        public void Update(AlarmEntity alarm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AlarmEntity GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAlarmStarted(AlarmEntity alarm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Stop(AlarmEntity alarm)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

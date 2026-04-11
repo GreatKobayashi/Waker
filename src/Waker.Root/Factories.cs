@@ -1,9 +1,11 @@
 ﻿using Waker.Aplication.Controllers;
+using Waker.Aplication.Handlers;
 using Waker.Domain;
 using Waker.Domain.Repositories;
 using Waker.Infrastructure.Fake;
 using Waker.Infrastructure.SQLite;
 using Waker.Root.Platforms.Android.Sound;
+using Waker.UI;
 
 namespace Waker.Root
 {
@@ -39,6 +41,11 @@ namespace Waker.Root
         public static SoundController GetSoundController()
         {
             return new(_soundRepository);
+        }
+
+        public static INavigationHandler GetNavigationHandler()
+        {
+            return new BlazorNavigationHandler();
         }
 #endif
 

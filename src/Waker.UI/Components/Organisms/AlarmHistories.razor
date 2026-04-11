@@ -7,7 +7,7 @@
         @foreach (var alarm in _alarms.Take(_showingHistories))
         {
             <div class="m-2" @key="@_alarms.IndexOf(alarm)">
-                <AlarmCard Title="@alarm.DateTime.ToString(_dateFormat)" SubTitle="One Time">test</AlarmCard>
+                <AlarmCard Alarm="@alarm" />
             </div>
         }
 
@@ -21,7 +21,6 @@
 </Collapse>
 
     @code {
-    private static readonly string _dateFormat = "MM/dd HH : mm";
 
     private AlarmEntity[]? _alarms;
     private bool _isVisible;

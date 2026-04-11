@@ -18,10 +18,15 @@ namespace Waker.Root
             _alarmManager = (AlarmManager)_context.GetSystemService(Context.AlarmService)!;
         }
 
+        public AlarmEntity GetById(int id) => throw new NotImplementedException();
+
+        public void Update(AlarmEntity alarm) { }
+
         public void Set(AlarmEntity alarm)
         {
             var intent = new Intent(_context, typeof(AlarmReceiver));
             intent.PutExtra(RootConstant.SOUND_KEY, alarm.Sound.FileName);
+            intent.PutExtra(RootConstant.ALARM_ID_KEY, alarm.Id);
             var pendingIntent = PendingIntent.GetBroadcast(_context, alarm.Id, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable)!;
 
             var triggerTime = new DateTimeOffset(alarm.DateTime.ToUniversalTime()).ToUnixTimeMilliseconds();
@@ -29,7 +34,7 @@ namespace Waker.Root
             _alarmManager.SetExactAndAllowWhileIdle(AlarmType.RtcWakeup, triggerTime, pendingIntent);
         }
 
-        public void Stop()
+        public void Stop(AlarmEntity _)
         {
             var intent = new Intent(_context, typeof(AlarmService));
             _context.StopService(intent);
@@ -51,6 +56,11 @@ namespace Waker.Root
         }
 
         public AlarmEntity[] GetEntities(DateTime? from, DateTime? to)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAlarmStarted(AlarmEntity alarm)
         {
             throw new NotImplementedException();
         }

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Waker.Domain;
 using Waker.Domain.Entities;
+using Waker.Domain.Exceptions;
 using Waker.Domain.Repositories;
 
 namespace Waker.Infrastructure.SQLite
@@ -63,26 +64,46 @@ namespace Waker.Infrastructure.SQLite
             alarm.Id = record.Id;
         }
 
-        public void Stop()
+        public AlarmEntity GetById(int id)
         {
-            throw new NotImplementedException();
+            var record = _db.Alarms.Find(id);
+            return record is null ? throw new InfrastructureException("Invalid alarm ID.") : Parse(record);
+        }
+
+        public void OnAlarmStarted(AlarmEntity alarm)
+        {
+            var record = _db.Alarms.Find(alarm.Id);
+            if (record is null) return;
+
+            record.StartedAt = DateTime.Now;
+            _db.SaveChanges();
+        }
+
+        public void Stop(AlarmEntity alarm)
+        {
+            var record = _db.Alarms.Find(alarm.Id);
+            if (record is null) return;
+
+            record.StoppedAt = DateTime.Now;
+            _db.SaveChanges();
         }
 
         public void Cancel(AlarmEntity alarm)
         {
             var record = _db.Alarms.Find(alarm.Id);
-            if (record is not null)
-            {
-                _db.Alarms.Remove(record);
-            }
+            if (record is null) return;
 
+            _db.Alarms.Remove(record);
             _db.SaveChanges();
         }
 
         private AlarmEntity Parse(AlarmRecord record)
-        {
-            return new AlarmEntity(record.Id, record.DateTime, new SoundEntity("", record.SoundFileName));
-        }
+            => new(
+                record.Id,
+                record.DateTime,
+                new SoundEntity("", record.SoundFileName ?? ""),
+                record.StartedAt,
+                record.StoppedAt);
     }
 
     public class AlarmContext : DbContext
@@ -99,8 +120,9 @@ namespace Waker.Infrastructure.SQLite
     public class AlarmRecord
     {
         public int Id { get; set; }
-
         public DateTime DateTime { get; set; }
-        public string SoundFileName { get; set; } = "";
+        public string? SoundFileName { get; set; }
+        public DateTime? StartedAt { get; set; }
+        public DateTime? StoppedAt { get; set; }
     }
 }

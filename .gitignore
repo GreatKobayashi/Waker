@@ -3,3 +3,5 @@ src/*/obj/*
 
 src/.vs/*/*
 src/Waker.Root/Platforms/Android/Resources/raw/*
+
+CLAUDE.md

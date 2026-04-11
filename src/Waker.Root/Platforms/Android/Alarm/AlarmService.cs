@@ -3,7 +3,8 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Media;
 using Android.OS;
-using Waker.UI;
+using Waker.Aplication.Handlers;
+using Waker.Domain.Handlers;
 
 namespace Waker.Root.Platforms.Android.Alarm
 {
@@ -42,7 +43,10 @@ namespace Waker.Root.Platforms.Android.Alarm
             _player.Looping = true;
             _player.Start();
 
-            NavigationService.NavigateTo(Url.Stop);
+            var services = IPlatformApplication.Current!.Services;
+            var alarmId = intent!.GetIntExtra(RootConstant.ALARM_ID_KEY, -1);
+            services.GetRequiredService<IAlarmEventHandler>().OnAlarmStarted(alarmId);
+            services.GetRequiredService<INavigationHandler>().NavigateToStop();
 
             return StartCommandResult.Sticky;
         }

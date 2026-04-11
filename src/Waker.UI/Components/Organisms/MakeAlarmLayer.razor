@@ -4,6 +4,10 @@
 ﻿
 <AddTimerButton OnClick="ShowLayer" />
 <ModalWindow @bind-IsVisible=_isVisible ActionAsync="SetAlarm">
+    <div class="m-2">
+        <DateSet @bind-Value="_date" @bind-Value:after="OnDateChangedAfter" />
+    </div>
+
     <div class="d-flex flex-row justify-content-center">
         <div class="mx-2">@_date.Month</div>
         <div>月</div>
@@ -27,19 +31,21 @@
     }
 </ModalWindow>
 
-
     @code {
     private string _hour = "00";
     private string _minute = "00";
     private bool _isVisible;
     private int _seletedSoundIndex = 0;
     private SoundEntity[]? _sounds;
-    private DateTime _date;
+    private DateOnly _date;
+    private DateOnly _today => DateOnly.FromDateTime(DateTime.Today);
+    private bool _isDateSetAtToday;
 
     protected override void OnInitialized()
     {
         _sounds = SoundController.GetEntities();
-        _date = DateTime.Now;
+        _date = _today;
+        _isDateSetAtToday = true;
     }
 
     private async Task ShowLayer()
@@ -51,9 +57,8 @@
 
     private async Task SetAlarm()
     {
-        var now = DateTime.Now;
-        var date = new DateTime(now.Year, now.Month, now.Day, Convert.ToInt32(_hour), Convert.ToInt32(_minute), 0);
-        var alarm = new AlarmEntity(date, _sounds![_seletedSoundIndex]);
+        var dateTime = new DateTime(_date.Year, _date.Month, _date.Day, Convert.ToInt32(_hour), Convert.ToInt32(_minute), 0);
+        var alarm = new AlarmEntity(dateTime, _sounds![_seletedSoundIndex]);
         AlarmController.Set(alarm);
 
         _ = NavigationService.DelayReload();
@@ -61,14 +66,19 @@
 
     private void CheckIfTimeIsPast()
     {
+        if (!_isDateSetAtToday) return;
+
         var now = DateTime.Now;
-        if (Convert.ToInt32(_hour) <= now.Hour && Convert.ToInt32(_minute) < now.Minute)
+        var hourInt = Convert.ToInt32(_hour);
+        if (hourInt < now.Hour || (hourInt == now.Hour && Convert.ToInt32(_minute) < now.Minute))
         {
-            _date = DateTime.Now.AddDays(1);
+            _date = _today.AddDays(1);
         }
         else
         {
-            _date = DateTime.Now;
+            _date = _today;
         }
     }
+
+    private void OnDateChangedAfter() => _isDateSetAtToday = _date == _today;
 }

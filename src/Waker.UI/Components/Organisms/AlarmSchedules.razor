@@ -17,14 +17,12 @@
     @foreach (var alarm in _alarms)
     {
         <div class="m-2" @key="@_alarms.IndexOf(alarm)">
-            <AlarmCard Title="@alarm.DateTime.ToString(_dateFormat)" SubTitle="One Time" IsCancelable OnCancelButtonClick="() => OnCancelButtonClicked(alarm)">test</AlarmCard>
+            <AlarmCard Alarm=@alarm IsCancelable OnCancelButtonClick="() => OnCancelButtonClicked(alarm)" />
         </div>
     }
 }
 
 @code {
-    private static readonly string _dateFormat = "MM/dd HH : mm";
-
     private AlarmEntity[]? _alarms;
     private bool _isConfigureMessageVisible = false;
     private AlarmEntity? _selectedAlarm;

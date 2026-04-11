@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Waker.Domain.Entities;
+﻿using Waker.Domain.Entities;
 using Waker.Domain.Repositories;
 
 namespace Waker.Infrastructure.Fake
